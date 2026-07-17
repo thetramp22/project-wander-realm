@@ -1,9 +1,14 @@
 package server
 
-import "github.com/thetrame22/project-wander-realm/internal/simulation"
+import (
+	"log"
+
+	"github.com/thetrame22/project-wander-realm/internal/simulation"
+)
 
 type Server struct {
 	simulation *simulation.Simulation
+	running    bool
 }
 
 func New() (*Server, error) {
@@ -20,11 +25,24 @@ func New() (*Server, error) {
 }
 
 func (s *Server) Start() error {
+	log.Println("starting server...")
+	s.running = true
+
+	err := s.simulation.Start()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
 
 func (s *Server) Stop() error {
+	log.Print("Stopping sever...")
+	err := s.simulation.Stop()
+	if err != nil {
+		return err
+	}
+	s.running = false
 
 	return nil
 }
